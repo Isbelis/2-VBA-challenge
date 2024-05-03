@@ -8,10 +8,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Option Explicit
+'*******************************************************
+' My VBA script file are three:
+' Level 1 : Define variables according numeral from 1 and 4 from my readme.
+' Level 2 : Include Level and Using conditional formatting according to point 5 of my readme.
+' Level 3 : Include Level 1 and 2, additional I determined the stock with the "Greatest % increase", "Greatest % decrease", and "Greatest total volume".
+'**************************************************
+
+Option Explicit
 
 Sub stocks():
-
-           Application.ScreenUpdating = False
 ' Declare the variables:
 
     'Declare variable Worksheet because it helps to execute in my workbook
@@ -51,8 +57,8 @@ Sub stocks():
     ticker_open = Cells(2, 3).Value
 
     For i = 2 To lastRow:
-        cell_vol = ws.Cells(i, 7).Value
-        ticker = ws.Cells(i, 1).Value
+        cell_vol = Cells(i, 7).Value
+        ticker = Cells(i, 1).Value
 
         ' LOOP rows 2 to 254
         ' check if next row ticker is DIFFERENT
@@ -60,12 +66,12 @@ Sub stocks():
         ' if DIFFERENT, then we need add last row, write out to the leaderboard
         ' reset the vol_total to 0
 
-        If (ws.Cells(i + 1, 1).Value <> ticker) Then
+        If (Cells(i + 1, 1).Value <> ticker) Then
             ' OMG we have a different ticker, panic
             vol_total = vol_total + cell_vol
             
             ' get the closing price of the ticker
-            ticker_close = ws.Cells(i, 6).Value
+            ticker_close = Cells(i, 6).Value
             price_change = ticker_close - ticker_open
             
             ' Check if open price is 0 first - to protect from Kevin the Hacker
@@ -133,53 +139,48 @@ Sub stocks():
            
             
             ' Find Max percentage change
-               ws.Range("Q2") = "%" & WorksheetFunction.Max(ws.Range("K2:K" & lastRow)) * 100
+               ws.Range("Q2") = "%" & WorksheetFunction.Max(Range("K2:K" & lastRow)) * 100
                
                ' Find Min percentage change
                ws.Range("Q3") = "%" & WorksheetFunction.Min(Range("K2:K" & lastRow)) * 100
                
              'Ticker on I Ticker
              
-                 MaxValue = WorksheetFunction.Match(WorksheetFunction.Max(ws.Range("K2:K" & lastRow)), ws.Range("K2:K" & lastRow), 0)
+                 MaxValue = WorksheetFunction.Match(WorksheetFunction.Max(Range("K2:K" & lastRow)), Range("K2:K" & lastRow), 0)
 
                  ws.Range("P2") = ws.Cells(MaxValue + 1, 9)
                  
-                 MinValue = WorksheetFunction.Match(WorksheetFunction.Min(ws.Range("K2:K" & lastRow)), ws.Range("K2:K" & lastRow), 0)
+                 MinValue = WorksheetFunction.Match(WorksheetFunction.Min(Range("K2:K" & lastRow)), Range("K2:K" & lastRow), 0)
 
                  ws.Range("P3") = ws.Cells(MinValue + 1, 9)
                  
                  'Find Greatest Total volume
                  
-                 Great_Volum = WorksheetFunction.Match(WorksheetFunction.Max(ws.Range("L2:L" & lastRow)), ws.Range("L2:L" & lastRow), 0)
+                 Great_Volum = WorksheetFunction.Match(WorksheetFunction.Max(Range("L2:L" & lastRow)), Range("L2:L" & lastRow), 0)
 
                    ws.Range("P4") = ws.Cells(Great_Volum + 1, 9)
-                   ws.Range("Q4") = WorksheetFunction.Max(ws.Range("L2:L" & lastRow))
+                   ws.Range("Q4") = WorksheetFunction.Max(Range("L2:L" & lastRow))
                    
                    
                    
-                   Application.ScreenUpdating = True
-'
                    
                    
-    
+                   
+                   
+   
+
 
    Next k
    Next
         
 End Sub
- 
- 
-
 
 Sub reset()
                 'Declare variable Worksheet because it helps to execute in my workbook
                  Dim ws As Worksheet
                  For Each ws In Worksheets
-
                  ws.Range("I:L").Value = ""
                  ws.Range("I:L").Interior.ColorIndex = 2
                  ws.Range("O:Q").Value = ""
 Next
 End Sub
-
-

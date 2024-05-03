@@ -7,14 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
-
 Option Explicit
-'*******************************************************
-' My VBA script file are three:
-' Part 1 : Define variables according numeral from 1 and 4 from my readme.
-' Part 2 : Include Part 1 and Using conditional formatting according to point 5 of my readme.
-' Part 3 : Include Part 1 and 2, additional I determined the stock with the "Greatest % increase", "Greatest % decrease", and "Greatest total volume".
-'**************************************************
+
 Sub stocks():
 ' Declare the variables:
 
@@ -59,7 +53,7 @@ Sub stocks():
         ticker = ws.Cells(i, 1).Value
 
         ' LOOP rows 2 to 254
-        ' check if next row ticker is DIFFERENT from the current one
+        ' check if next row ticker is DIFFERENT
         ' if the same, then we only need to add to the vol_total
         ' if DIFFERENT, then we need add last row, write out to the leaderboard
         ' reset the vol_total to 0
@@ -68,18 +62,55 @@ Sub stocks():
             ' OMG we have a different ticker, panic
             vol_total = vol_total + cell_vol
             
+            ' get the closing price of the ticker
+            ticker_close = ws.Cells(i, 6).Value
+            price_change = ticker_close - ticker_open
             
-         End If
-   
-Next i
-Next
+            ' Check if open price is 0 first - to protect from Kevin the Hacker
+            If (ticker_open > 0) Then
+                percent_change = price_change / ticker_open
+        
+                ticker_open = ws.Cells(i + 1, 3).Value
+             End If
 
+            ws.Cells(k, 9).Value = ticker
+            ws.Cells(k, 10).Value = price_change
+            ws.Cells(k, 11).Value = percent_change
+            ws.Cells(k, 12).Value = vol_total
+            
+            ' formatting
+            If (price_change > 0) Then
+                ws.Cells(k, 10).Interior.ColorIndex = 4 ' Green
+            ElseIf (price_change < 0) Then
+                ws.Cells(k, 10).Interior.ColorIndex = 3 ' Red
+            Else
+                ws.Cells(k, 10).Interior.ColorIndex = 2 ' White
+            End If
+         
+
+            ' reset
+            vol_total = 0
+            k = k + 1
+         
+      
+        Else
+            ' we just add to the total
+            vol_total = vol_total + cell_vol
+      End If
+    Next i
+    
+    ' Style my leaderboard
+    ws.Columns("K:K").NumberFormat = "0.00%"
+    ws.Columns("I:L").AutoFit
+                   
+     Next
 End Sub
 Sub reset()
                 'Declare variable Worksheet because it helps to execute in my workbook
                  Dim ws As Worksheet
                  For Each ws In Worksheets
                  ws.Range("I:L").Value = ""
+                 ws.Range("I:L").Interior.ColorIndex = 2
                  ws.Range("O:Q").Value = ""
 Next
 End Sub
