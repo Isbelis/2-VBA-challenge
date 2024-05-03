@@ -10,6 +10,8 @@ The VBA scripting challenge, I created a script that loops through all the stock
          6. Add functionality to your script to return the stock with the "Greatest % increase", "Greatest % decrease", and "Greatest total volume"
          7. Make the appropriate adjustments to your VBA script to enable it to run on every worksheet (that is, every quarter) at once.
 
+   
+
     **Other Considerations**
            Use the sheet “alphabetical_testing.xlsx” while developing your code. This dataset is smaller and will allow you to test faster. Your code should run on this file in just a few seconds.
            
